@@ -7,7 +7,6 @@ import SearchBooks from './SearchBooks'
 
 class BooksApp extends Component {
   state = {
-    
     books: []
   }
   componentDidMount() {
