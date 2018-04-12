@@ -15,23 +15,14 @@ class BooksApp extends Component {
       this.setState({ books })
     })
   }
-  // changeShelf = (book, shelf) => {
-  //   console.log(shelf)
-  //   this.setState((state) => ({
-  //     what : state.books.map((b) => (
-  //       (b.id === book.id) && (b.shelf = shelf)     
-      
-  //     )),
-      
-  //     b : this.render()
-  //   }))
-
-  //   //BooksAPI.update(book, shelf)
-  // }
-  changeShelf(book, shelf) {
-    BooksAPI.update(book, shelf).then((books) => {
-     console.log(books)
-    })
+  
+  changeShelf = (book, shelf) => {
+    this.setState((state) => ({
+      what : state.books.map((b) => (
+        (b.id === book.id) && (b.shelf = shelf)         
+      ))
+    }))
+    BooksAPI.update(book, shelf)
   }
   searchBooks(book) {
     
