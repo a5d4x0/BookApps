@@ -14,29 +14,21 @@ class BooksApp extends Component {
       this.setState({ books })
     })
   }
-  // removeShelf = (book) => {
-  //   console.log(book)
-  //   this.setState((state) => ({
-  //     books: state.books.filter((c) => c.id !== book.id)
-  //   }))
-  // }
+
   changeShelf = (book, shelf) => {
-    this.setState((state) => ({
-      what : state.books.map((b) => (
+    this.setState((state) => {
+      state.books.map((b) => (
         (b.id === book.id) && (b.shelf = shelf)         
       ))
-    }))
+    })
     BooksAPI.update(book, shelf)
   }
   addShelf = (book, shelf) => {
     BooksAPI.update(book, shelf)
     book['shelf'] = shelf
-    let item
-    item = this.state.books
-    item.push(book)
-    this.setState((state) => ({
-      books: item
-    }))
+    this.setState((state) => {
+      state.books.push(book)
+    })
   }
   render() {
     return (
@@ -48,13 +40,12 @@ class BooksApp extends Component {
               onChangeShelf={this.changeShelf}
             />
           )}/> 
-          <Route path='/search' render={({ history }) => (
+          <Route path='/search' render={({}) => (
             <SearchBooks 
+              shelfBooks={this.state.books}
               onAddShelf={(book, shelf) => {
                 this.addShelf(book, shelf)
-                //history.push('/')
               }} 
-              
             />
           )}/>
         </div>

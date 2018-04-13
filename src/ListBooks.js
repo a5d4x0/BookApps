@@ -10,21 +10,16 @@ class ListBooks extends Component {
             'read':'Read'
         }
         return (
-           
             <div className="list-books">
             <div className="list-books-title">
                 <h1>MyReads</h1>
             </div>
             <div className="list-books-content">
                 <div>
-                   
-                { 
-                    console.log(books)
-                }
                 {
                     shelfNames.map((shelfName) => (
                     <div key={shelfName} className="bookshelf">
-                        <h2 className="bookshelf-title">{shelfName}</h2>
+                        <h2 className="bookshelf-title">{showShelf[shelfName]}</h2>
                         <div className="bookshelf-books">
                         <ol className="books-grid">
                         {
