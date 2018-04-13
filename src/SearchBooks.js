@@ -48,7 +48,7 @@ class SearchBooks extends Component {
                     <li key={book.id}>
                     <div className="book">
                         <div className="book-top">
-                        <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 'url('+book.imageLinks.smallThumbnail+')' }}></div>
+                        <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: ("imageLinks" in book)?'url('+book.imageLinks.smallThumbnail+')':'url()'}}></div>
                         <div className="book-shelf-changer">
                         <select onChange={(event) => onAddShelf(book, event.target.value)}>
                             <option value="none" disabled>Move to...</option>
