@@ -7,22 +7,22 @@ class SearchBooks extends Component {
         books: []
       }
       componentDidMount() {
-        BooksAPI.getAll().then((books) => {
-          this.setState({ books })
-        })
+        
       }
     updateQuery = (query) => {
         this.setState({ query: query.trim() })
     }
+    searchBooks(query) {
+        BooksAPI.search(query.trim()).then(book => {
+            this.setState(state => ({
+                books: book
+              }))
+        })
+    }
     render() {
-        // const { query } = this.state
-        // let showingContacts
-        // if (query) {
-        //     const match = new RegExp(escapeRegExp(query), 'i')
-        //     showingContacts = contacts.filter((contact) => match.test(contact.name))
-        // } else {
-        //     showingContacts = contacts
-        // }
+        const {onAddShelf} = this.props
+        const { query } = this.state.query
+        //const { books } = this.state.books
         return (
             <div className="search-books">
             <div className="search-books-bar">
@@ -32,8 +32,8 @@ class SearchBooks extends Component {
                 <input 
                     type="text" 
                     placeholder="Search by title or author"
-                    //value={query}
-                    onChange={(event) => this.updateQuery(event.target.value)}
+                    value={query}
+                    onChange={(event) => this.searchBooks(event.target.value)}
                 />
 
             </div>
@@ -42,45 +42,30 @@ class SearchBooks extends Component {
             <ol className="books-grid"></ol>
             </div>
             <ol className="books-grid">
-                {/* {
-                    books.filter((showBook) => showBook.shelf === shelfName).map((book) => (
-                        <li key={book.id}>
-                        <div className="book">
-                            <div className="book-top">
-                            <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 'url('+book.URL+')' }}></div>
-                            <div className="book-shelf-changer">
-                                <select onChange={(event) => onChangeShelf(event.target.value, book)}>
-                                <option value="none" disabled>Move to...</option>
-                                <option value="currentlyReading">Currently Reading</option>
-                                <option value="wantToRead">Want to Read</option>
-                                <option value="read">Read</option>
-                                <option value="none">None</option>
-                                </select>
-                            </div>
-                            </div>
-                            <div className="book-title">{book.title}</div>
-                            <div className="book-authors">{book.authors}</div>
+            {        console.log(this.state.books)}
+            {
+                this.state.books.map((book) => (
+                    <li key={book.id}>
+                    <div className="book">
+                        <div className="book-top">
+                        <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 'url('+book.imageLinks.smallThumbnail+')' }}></div>
+                        <div className="book-shelf-changer">
+                        <select onChange={(event) => onAddShelf(book, event.target.value)}>
+                            <option value="none" disabled>Move to...</option>
+                            <option value="currentlyReading">Currently Reading</option>
+                            <option value="wantToRead">Want to Read</option>
+                            <option value="read">Read</option>
+                            <option value="none">None</option>
+                        </select>
                         </div>
-                    </li>  
-                    ))
-                } */}
-            </ol>
-            {/* <ol className='contact-list'>
-                {showingContacts.map((contact) => (
-                    <li key={contact.id} className='contact-list-item'>
-                    <div className='contact-avatar' style={{
-                        backgroundImage: `url(${contact.avatarURL})`
-                    }}/>
-                    <div className='contact-details'>
-                        <p>{contact.name}</p>
-                        <p>{contact.email}</p>
+                        </div>
+                        <div className="book-title">{book.title}</div>
+                        <div className="book-authors">{book.authors}</div>
                     </div>
-                    <button onClick={() => onDeleteContact(contact)} className='contact-remove'>
-                        Remove
-                    </button>
-                    </li>
-                ))}
-            </ol> */}
+                </li>  
+                ))
+            }
+            </ol>
             </div>
         )
     }

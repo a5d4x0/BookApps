@@ -14,7 +14,12 @@ class BooksApp extends Component {
       this.setState({ books })
     })
   }
-  
+  // removeShelf = (book) => {
+  //   console.log(book)
+  //   this.setState((state) => ({
+  //     books: state.books.filter((c) => c.id !== book.id)
+  //   }))
+  // }
   changeShelf = (book, shelf) => {
     this.setState((state) => ({
       what : state.books.map((b) => (
@@ -23,8 +28,15 @@ class BooksApp extends Component {
     }))
     BooksAPI.update(book, shelf)
   }
-  searchBooks(book) {
-    
+  addShelf = (book, shelf) => {
+    BooksAPI.update(book, shelf)
+    book['shelf'] = shelf
+    let item
+    item = this.state.books
+    item.push(book)
+    this.setState((state) => ({
+      books: item
+    }))
   }
   render() {
     return (
@@ -32,16 +44,17 @@ class BooksApp extends Component {
         <div>
           <Route exact path='/' render={() => (
             <ListBooks
-              onChangeShelf={this.changeShelf}
               books={this.state.books}
+              onChangeShelf={this.changeShelf}
             />
           )}/> 
           <Route path='/search' render={({ history }) => (
             <SearchBooks 
-              onSearchBooks={(book) => {
-                this.searchBooks(book)
-                history.push('/')
-              }}
+              onAddShelf={(book, shelf) => {
+                this.addShelf(book, shelf)
+                //history.push('/')
+              }} 
+              
             />
           )}/>
         </div>
