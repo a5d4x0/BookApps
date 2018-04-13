@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
-class ListBooks extends Component {
+class BooksShelf extends Component {
     render() {
         const { books, onChangeShelf } = this.props
         const shelfNames = ['currentlyReading', 'wantToRead', 'read']
@@ -16,7 +16,7 @@ class ListBooks extends Component {
             </div>
             <div className="list-books-content">
                 <div>
-                {
+                {/**遍历三种书架，将对应的书籍添加到书架上 */
                     shelfNames.map((shelfName) => (
                     <div key={shelfName} className="bookshelf">
                         <h2 className="bookshelf-title">{showShelf[shelfName]}</h2>
@@ -57,4 +57,4 @@ class ListBooks extends Component {
         )
     }
 }
-export default ListBooks
+export default BooksShelf

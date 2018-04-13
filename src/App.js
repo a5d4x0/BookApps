@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
-import ListBooks from './ListBooks'
+import BooksShelf from './BooksShelf'
 import SearchBooks from './SearchBooks'
 
 class BooksApp extends Component {
@@ -10,11 +10,12 @@ class BooksApp extends Component {
     books: []
   }
   componentDidMount() {
+    /**获取服务器端存储的显示在书架上的书 */
     BooksAPI.getAll().then((books) => {
       this.setState({ books })
     })
   }
-
+/**用于更改图书的书架类别 */
   changeShelf = (book, shelf) => {
     this.setState((state) => {
       state.books.map((b) => (
@@ -23,6 +24,7 @@ class BooksApp extends Component {
     })
     BooksAPI.update(book, shelf)
   }
+  /**把书从搜索页面添加到书架上 */
   addShelf = (book, shelf) => {
     BooksAPI.update(book, shelf)
     book['shelf'] = shelf
@@ -35,7 +37,7 @@ class BooksApp extends Component {
       <div className="app">
         <div>
           <Route exact path='/' render={() => (
-            <ListBooks
+            <BooksShelf
               books={this.state.books}
               onChangeShelf={this.changeShelf}
             />
