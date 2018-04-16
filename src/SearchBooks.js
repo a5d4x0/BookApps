@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
+import BooksShow from './BooksShow'
+import * as _ from 'lodash';
 class SearchBooks extends Component {
     state = {
         query: '',
@@ -9,13 +11,13 @@ class SearchBooks extends Component {
     updateQuery = (query) => {
         this.setState({ query: query.trim() })
     }
-    searchBooks(query) {
+    searchBooks =  _.debounce(query => {
         BooksAPI.search(query.trim()).then(book => {
-            this.setState(state => ({
+            (Array.isArray(book))&&this.setState(state => ({
                 books: book
               }))
         })
-    }
+    }, 400)
     render() {
         const {shelfBooks, onAddShelf} = this.props
         const { query } = this.state.query
@@ -37,31 +39,21 @@ class SearchBooks extends Component {
             <ol className="books-grid"></ol>
             </div>
             <ol className="books-grid">
+           
             {
+               
                 this.state.books.map((book) => (
 
                     <li key={book.id}>
-                    {shelfBooks.map((item) => {
-                        (item.id === book.id) &&
-                        ( book['shelf'] = item.shelf)
-                    })}
-                    <div className="book">
-                        <div className="book-top">
-                        <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: ("imageLinks" in book)?'url('+book.imageLinks.smallThumbnail+')':'url()'}}></div>
-                        <div className="book-shelf-changer">
-                        <select defaultValue={book.shelf?book.shelf:"none"} onChange={(event) => onAddShelf(book, event.target.value)}>
-                            <option value="none" disabled>Move to...</option>
-                            <option value="currentlyReading">Currently Reading</option>
-                            <option value="wantToRead">Want to Read</option>
-                            <option value="read">Read</option>
-                            <option value="none">None</option>
-                        </select>
-                        </div>
-                        </div>
-                        <div className="book-title">{book.title}</div>
-                        <div className="book-authors">{book.authors}</div>
-                    </div>
-                </li>  
+                        {shelfBooks.map((item) => {
+                            (item.id === book.id) &&
+                            ( book['shelf'] = item.shelf)
+                        })}
+                        <BooksShow 
+                            book={book}
+                            onChangeShelf={onAddShelf}
+                        />
+                    </li>  
                 ))
             }
             </ol>
